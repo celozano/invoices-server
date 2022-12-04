@@ -6,8 +6,8 @@ import { Client } from './Client';
 import { CounterModel } from './Counter';
 
 @ObjectType()
-@InputType('RowInput')
-class Row {
+@InputType('ServiceInput')
+class Service {
   @Field()
   @Property()
   description: string;
@@ -27,6 +27,10 @@ class Row {
   @Field()
   @Property()
   tax_rate: number;
+
+  @Field()
+  @Property()
+  tax: number;
 
   @Field()
   @Property()
@@ -66,9 +70,9 @@ export class Invoice {
   @Property()
   created_at: Date;
 
-  @Field(() => [Row])
-  @Property({ type: () => Row, default: [] })
-  rows: Row[];
+  @Field(() => [Service])
+  @Property({ type: () => Service, default: [] })
+  services: Service[];
 
   @Field()
   @Property()
@@ -101,9 +105,9 @@ export class InvoiceInput implements Partial<Invoice> {
   @Property()
   car: Car;
 
-  @Field(() => [Row])
-  @Property({ type: () => Row, default: [] })
-  rows: Row[];
+  @Field(() => [Service])
+  @Property({ type: () => Service, default: [] })
+  services: Service[];
 
   @Field()
   @Property()
@@ -116,10 +120,6 @@ export class InvoiceInput implements Partial<Invoice> {
   @Field()
   @Property()
   total: number;
-
-  @Field()
-  @Property()
-  amount_paid: number;
 }
 
 export const InvoiceModel = getModelForClass(Invoice);

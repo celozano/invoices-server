@@ -1,4 +1,4 @@
-import { getModelForClass, prop as Property } from '@typegoose/typegoose';
+import { prop as Property } from '@typegoose/typegoose';
 import { Field, InputType, ObjectType } from 'type-graphql';
 
 @ObjectType()
@@ -16,5 +16,3 @@ export class Client {
   @Property()
   phone: string;
 }
-
-export const ClientModel = getModelForClass(Client);
