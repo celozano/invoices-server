@@ -22,10 +22,6 @@ class Service {
 
   @Field()
   @Property()
-  has_tax: boolean;
-
-  @Field()
-  @Property()
   tax_rate: number;
 
   @Field()
