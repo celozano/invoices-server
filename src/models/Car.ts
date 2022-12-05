@@ -30,10 +30,6 @@ export class Car {
 
   @Field()
   @Property()
-  other: string;
-
-  @Field()
-  @Property()
   start_mileage: string;
 
   @Field()
