@@ -1,4 +1,4 @@
-import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 
 import {
   createInvoice,
@@ -6,6 +6,12 @@ import {
   InvoiceInput,
   InvoiceModel,
 } from '../models/Invoice';
+
+import { Context as ApolloContext } from 'apollo-server-core';
+
+interface Context extends ApolloContext {
+  user: any;
+}
 
 @Resolver()
 export class InvoiceResolver {
@@ -28,7 +34,15 @@ export class InvoiceResolver {
 
   @Authorized()
   @Mutation(() => Invoice)
-  async createInvoice(@Arg('data') invoice: InvoiceInput): Promise<Invoice> {
-    return await createInvoice(invoice);
+  async createInvoice(
+    @Arg('data') invoice: InvoiceInput,
+    @Ctx() ctx: Context
+  ): Promise<Invoice> {
+    const username = ctx.user.email.split('@')[0];
+    return await createInvoice({
+      ...invoice,
+      created_at: new Date(),
+      created_by: username,
+    });
   }
 }

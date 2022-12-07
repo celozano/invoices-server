@@ -62,10 +62,6 @@ export class Invoice {
   @Property()
   car: Car;
 
-  @Field()
-  @Property()
-  created_at: Date;
-
   @Field(() => [Service])
   @Property({ type: () => Service, default: [] })
   services: Service[];
@@ -85,6 +81,10 @@ export class Invoice {
   @Field()
   @Property()
   amount_paid: number;
+
+  @Field()
+  @Property()
+  created_at: Date;
 
   @Field()
   @Property()
@@ -116,14 +116,18 @@ export class InvoiceInput implements Partial<Invoice> {
   @Field()
   @Property()
   total: number;
+
+  @Field({ nullable: true })
+  @Property()
+  created_at?: Date;
+
+  @Field({ nullable: true })
+  @Property()
+  created_by?: string;
 }
 
 export const InvoiceModel = getModelForClass(Invoice);
 
 export const createInvoice = (invoice: InvoiceInput) => {
-  return InvoiceModel.create({
-    ...invoice,
-    created_at: new Date(),
-    created_by: 'carlos',
-  });
+  return InvoiceModel.create(invoice);
 };
