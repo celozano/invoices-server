@@ -5,6 +5,8 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-co
 import { buildSchema } from 'type-graphql';
 import { connect } from 'mongoose';
 
+import { authChecker } from './auth/authChecker';
+import { decodeIDToken } from './firebase';
 import { InvoiceResolver } from './resolvers/invoice';
 
 const main = async () => {
@@ -17,10 +19,16 @@ const main = async () => {
 
   const schema = await buildSchema({
     resolvers: [InvoiceResolver],
+    authChecker,
   });
 
   const apolloServer = new ApolloServer({
     schema,
+    context: async (req) => {
+      const user = await decodeIDToken(req);
+
+      return { ...req, user };
+    },
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   });
 
