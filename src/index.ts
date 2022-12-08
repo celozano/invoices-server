@@ -1,3 +1,7 @@
+require('dotenv').config();
+const DATABASE_URL = process.env.DATABASE_URL!;
+const PORT = process.env.PORT;
+
 import 'reflect-metadata';
 import * as Express from 'express';
 import { ApolloServer } from 'apollo-server-express';
@@ -11,8 +15,7 @@ import { InvoiceResolver } from './resolvers/invoice';
 
 const main = async () => {
   try {
-    await connect('mongodb://0.0.0.0:27017/tornell-invoices');
-    console.log('Connected to mongodb!');
+    await connect(DATABASE_URL);
   } catch (err) {
     console.log(`Error while connecting to mongodb: ${err}`);
   }
@@ -38,8 +41,8 @@ const main = async () => {
 
   apolloServer.applyMiddleware({ app });
 
-  app.listen(4000, () => {
-    console.log('Server running on http://localhost:4000/graphql');
+  app.listen(PORT, () => {
+    console.log('Server running');
   });
 };
 

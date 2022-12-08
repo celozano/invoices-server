@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 import * as firebaseAdmin from 'firebase-admin';
 
 const admin = firebaseAdmin.initializeApp({
@@ -21,16 +19,19 @@ const admin = firebaseAdmin.initializeApp({
 
 const decodeIDToken = async (ctx: any) => {
   const Authorization = (ctx.req || ctx.request).get('Authorization');
-  if (Authorization) {
-    try {
-      const token = Authorization.replace('Bearer ', '');
+  const token = Authorization?.replace('Bearer ', '');
 
-      return await admin.auth().verifyIdToken(token);
-    } catch (err) {
-      console.log('err', err);
-    }
+  if (!token) {
+    console.error('token was not proved');
+    return null;
   }
-  return null;
+
+  try {
+    return await admin.auth().verifyIdToken(token);
+  } catch (err) {
+    console.error('err', err);
+    return null;
+  }
 };
 
 export { decodeIDToken };
