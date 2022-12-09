@@ -1,6 +1,6 @@
 require('dotenv').config();
 const DATABASE_URL = process.env.DATABASE_URL!;
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 
 import 'reflect-metadata';
 import * as Express from 'express';
@@ -16,6 +16,7 @@ import { InvoiceResolver } from './resolvers/invoice';
 const main = async () => {
   try {
     await connect(DATABASE_URL);
+    console.log('Connected to mongodb.');
   } catch (err) {
     console.log(`Error while connecting to mongodb: ${err}`);
   }

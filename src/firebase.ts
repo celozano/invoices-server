@@ -22,12 +22,15 @@ const decodeIDToken = async (ctx: any) => {
   const token = Authorization?.replace('Bearer ', '');
 
   if (!token) {
-    console.error('token was not proved');
+    console.error('token was not provided');
     return null;
   }
 
   try {
-    return await admin.auth().verifyIdToken(token);
+    console.log(`verifying token ${token.slice(0, 5)}...`);
+    const verified = await admin.auth().verifyIdToken(token);
+    console.log('verified');
+    return verified;
   } catch (err) {
     console.error('err', err);
     return null;
